@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jcsv-1.4.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.jcsv/jcsv/1.4.0/3b2dfd1ff251cdcf4745a7643a966f14d10e2532/jcsv-1.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.jcsv/jcsv/1.4.0/2cecffe30f25e6ef0e96b212e6e3cfd5bf5f4b29/jcsv-1.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
