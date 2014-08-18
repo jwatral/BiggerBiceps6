@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/calendar_navigation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/monthyear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="MONTH_YEAR"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
+
+        <TextView
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/monthyear"
+            android:text="<<"
+            />
+
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/monthyear"
+            android:text=">>"
+            />
+
+     </RelativeLayout>
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/calendar_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:numColumns="7"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:stretchMode="columnWidth"
+
+        android:gravity="center"
+        />
+
+</LinearLayout>
