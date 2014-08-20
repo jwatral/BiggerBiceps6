@@ -18,6 +18,7 @@ public abstract class Training {
     public Training(Date date)
     {
         DateOfTraining = date;
+        _achievements = new LinkedList<Achievement>();
     }
 
     public boolean HasAchievements()

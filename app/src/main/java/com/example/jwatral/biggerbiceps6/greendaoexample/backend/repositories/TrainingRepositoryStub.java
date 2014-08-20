@@ -20,6 +20,7 @@ public class TrainingRepositoryStub implements IRepository<Training> {
     @Override
     public LinkedList<Training> Get() {
         if (_trainings == null) {
+            _trainings = new LinkedList<Training>();
             //fake list of trainings for current month.
             Calendar calendar = Calendar.getInstance();
             // get number of days in month

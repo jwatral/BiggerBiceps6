@@ -42,7 +42,7 @@ public class CalendarViewAdapter extends BaseAdapter {
         _context = c;
         _currentMonth = month;
         _formatter = new TrainingDayCalendarItemFormatter();
-        refresh();
+        //refresh();
     }
 
     @Override
@@ -81,27 +81,31 @@ public class CalendarViewAdapter extends BaseAdapter {
         // TODO: all copied from some example, so need to revisit and see what is needed and what is not
         emptyDaysOffset=-1; // to start from 0 index after adding offset (e.g. to make 0 + 1 = 0 if first day is first day of week
         int lastDay = _currentMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int firstDay = _currentMonth.get(Calendar.DAY_OF_WEEK);
+        Calendar cal = (Calendar)_currentMonth.clone();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        int firstDay = cal.get(Calendar.DAY_OF_WEEK);
 
         // figure size of the array
         if(firstDay==1){
             _trainingDays = new TrainingDay[lastDay+(FIRST_DAY_OF_WEEK*6)];
         }
         else {
-            _trainingDays = new TrainingDay[lastDay+firstDay-(FIRST_DAY_OF_WEEK+1)];
+            _trainingDays = new TrainingDay[lastDay+firstDay-(FIRST_DAY_OF_WEEK)];
         }
 
         // populate empty days before first real day
-        if(firstDay > 1) {
-            for(int j=0;j<firstDay-FIRST_DAY_OF_WEEK;j++) {
+        int length = _trainingDays.length;
+        for(int j=0;j<length;j++)
+        {
+            if(j<firstDay-FIRST_DAY_OF_WEEK)
+            {
                 _trainingDays[j] = null;
                 emptyDaysOffset++;
             }
-        }
-        else {
-            for(int j=0;j<FIRST_DAY_OF_WEEK*6;j++) {
+            else
+            {
                 TrainingDay td = new TrainingDay();
-                td.dayOfMonth = j+1;
+                td.dayOfMonth = j-emptyDaysOffset;
                 td.training = null;
                 _trainingDays[j] = td;
             }
@@ -175,10 +179,9 @@ public class CalendarViewAdapter extends BaseAdapter {
 
         private boolean isThisDayToday(TrainingDay trainingDay)
         {
-            Calendar dateToTest = Calendar.getInstance();
-            dateToTest.setTime(trainingDay.training.DateOfTraining);
-            return _currentMonth.get(Calendar.YEAR) == dateToTest.get(Calendar.YEAR) &&
-                   _currentMonth.get(Calendar.MONTH) == dateToTest.get(Calendar.MONTH) &&
+            Calendar today = Calendar.getInstance(); // today
+            return _currentMonth.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                   _currentMonth.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
                    trainingDay.dayOfMonth == _currentMonth.get(Calendar.DAY_OF_MONTH);
         }
     }
