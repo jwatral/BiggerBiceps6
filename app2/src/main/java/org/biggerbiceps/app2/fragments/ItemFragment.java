@@ -13,7 +13,8 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.biggerbiceps.app2.R;
-import org.biggerbiceps.app2.dummy.DummyContent;
+import org.biggerbiceps.app2.model.Training;
+import org.biggerbiceps.app2.repositories.Repository;
 
 /**
  * A fragment representing a list of Items.
@@ -48,6 +49,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
      */
     private ListAdapter mAdapter;
 
+
     // TODO: Rename and change types of parameters
     public static ItemFragment newInstance(String param1, String param2) {
         ItemFragment fragment = new ItemFragment();
@@ -75,8 +77,8 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         }
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        mAdapter = new ArrayAdapter<Training>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, Repository.TRAINING.getAll());
     }
 
     @Override
@@ -117,7 +119,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(Repository.TRAINING.getAll().get(position).getId());
         }
     }
 

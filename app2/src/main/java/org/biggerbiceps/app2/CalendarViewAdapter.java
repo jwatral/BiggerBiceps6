@@ -14,9 +14,10 @@ import org.biggerbiceps.app2.model.GymTraining;
 import org.biggerbiceps.app2.model.StubTraining;
 import org.biggerbiceps.app2.model.Training;
 import org.biggerbiceps.app2.repositories.IRepository;
+import org.biggerbiceps.app2.repositories.Repository;
 
 import java.util.Calendar;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Michał on 2014-08-18.
@@ -31,13 +32,12 @@ public class CalendarViewAdapter extends BaseAdapter {
 
     private Calendar _currentMonth;
 
-    private IRepository<Training> _trainingRepository; // use DI ?
+    private IRepository<Training> _trainingRepository = Repository.TRAINING; // use DI ?
 
     private TrainingDayCalendarItemFormatter _formatter; // use DI
 
-    public CalendarViewAdapter(IRepository<Training> trainingsRepository, Context c, Calendar month)
+    public CalendarViewAdapter(Context c, Calendar month)
     {
-        _trainingRepository = trainingsRepository;
         _context = c;
         _currentMonth = month;
         _formatter = new TrainingDayCalendarItemFormatter();
@@ -111,7 +111,7 @@ public class CalendarViewAdapter extends BaseAdapter {
         }
 
         // load items
-        LinkedList<Training> trainingsInMonth = _trainingRepository.Get(); // TODO: add filtered get
+        List<Training> trainingsInMonth = _trainingRepository.getAll(); // TODO: add filtered get
         Calendar c = Calendar.getInstance();
         for(Training t : trainingsInMonth)
         {

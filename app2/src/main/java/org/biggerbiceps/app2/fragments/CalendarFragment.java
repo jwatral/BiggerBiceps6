@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 import org.biggerbiceps.app2.CalendarViewAdapter;
 import org.biggerbiceps.app2.R;
-import org.biggerbiceps.app2.model.Training;
-import org.biggerbiceps.app2.repositories.IRepository;
-import org.biggerbiceps.app2.repositories.TrainingRepositoryStub;
 
 import java.util.Calendar;
 
@@ -34,7 +31,6 @@ public class CalendarFragment extends Fragment {
     public Calendar _selected;
     public CalendarViewAdapter _adapter;
     public Handler _handler;
-    public IRepository<Training> _repository;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,8 +80,7 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.trainingcalendar, container, false);
         _selected = Calendar.getInstance();  //will return today
 
-        _repository = new TrainingRepositoryStub();
-        _adapter = new CalendarViewAdapter(_repository,getActivity(),_selected);
+        _adapter = new CalendarViewAdapter(getActivity(),_selected);
 
         _adapter.refresh();
         _adapter.notifyDataSetChanged();
