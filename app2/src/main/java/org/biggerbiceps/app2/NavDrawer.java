@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,13 +14,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.couchbase.lite.QueryEnumerator;
+
+import org.biggerbiceps.app2.document.List;
 import org.biggerbiceps.app2.fragments.CalendarFragment;
 import org.biggerbiceps.app2.fragments.ItemFragment;
 import org.biggerbiceps.app2.fragments.NavigationDrawerFragment;
+import org.biggerbiceps.app2.fragments.TasksFragment;
+
+//import org.biggerbiceps.app2.fragments.ListDrawerFragment;
 
 
 public class NavDrawer extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        ItemFragment.OnFragmentInteractionListener,
+        CalendarFragment.OnFragmentInteractionListener
+//        ListDrawerFragment.ListSelectionCallback
+{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -30,6 +44,8 @@ public class NavDrawer extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    final String TAG = "app2";
+//    private ListDrawerFragment mDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +60,12 @@ public class NavDrawer extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        String currentListId = getCurrentListId();
+        if (currentListId != null) {
+            displayListContent(currentListId);
+        }
+
     }
 
     @Override
@@ -54,7 +76,7 @@ public class NavDrawer extends Activity
         switch (position)
         {
             case 0:
-                fragmentManager.beginTransaction().replace(R.id.container, new ItemFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, TasksFragment.newInstance("0")).commit();
                 break;
             case 1:
                 fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
@@ -117,12 +139,52 @@ public class NavDrawer extends Activity
 
     @Override
     public void onFragmentInteraction(String id) {
+        startActivity(new Intent(this, WorkoutDetailsActivity.class));
 
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private void displayListContent(String listDocId) {
+        Document document = getDatabase().getDocument(listDocId);
+        getActionBar().setSubtitle((String)document.getProperty("title"));
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, TasksFragment.newInstance(listDocId))
+                .commit();
+
+        Application application = (Application)getApplication();
+        application.setCurrentListId(listDocId);
+    }
+
+//    @Override
+//    public void onListSelected(String id) {
+//        displayListContent(id);
+//    }
+
+    private Database getDatabase() {
+        Application application = (Application) getApplication();
+        return application.getDatabase();
+    }
+
+
+
+    private String getCurrentListId() {
+        Application application = (Application) getApplication();
+        String currentListId = application.getCurrentListId();
+        if (currentListId == null) {
+            try {
+                QueryEnumerator enumerator = List.getQuery(getDatabase()).run();
+                if (enumerator.getCount() > 0) {
+                    currentListId = enumerator.getRow(0).getDocument().getId();
+                }
+            } catch (CouchbaseLiteException e) { }
+        }
+        return currentListId;
     }
 
     /**

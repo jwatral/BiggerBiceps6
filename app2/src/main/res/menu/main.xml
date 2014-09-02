@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.biggerbiceps.app2.NavDrawer">
+    <item android:id="@+id/action_new_list"
+        android:title="@string/action_new_list"
+        android:showAsAction="ifRoom|withText" />
+</menu>

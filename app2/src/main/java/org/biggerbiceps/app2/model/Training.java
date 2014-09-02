@@ -9,9 +9,13 @@ import java.util.LinkedList;
  * Created by Michał on 2014-08-18.
  */
 public abstract class Training implements Identifiable {
+// ------------------------------ FIELDS ------------------------------
+
     public Date DateOfTraining;
     public LinkedList<Achievement> _achievements;
     private String mId;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     protected Training()
     {
@@ -24,6 +28,25 @@ public abstract class Training implements Identifiable {
         _achievements = new LinkedList<Achievement>();
     }
 
+// ------------------------ CANONICAL METHODS ------------------------
+
+    @Override
+    public String toString() {
+        return String.format("%s @ %tD",getClass().getSimpleName(), DateOfTraining);
+    }
+
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface Identifiable ---------------------
+
+    @Override
+    public String getId() {
+        return mId;
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
     public boolean HasAchievements()
     {
         return (_achievements!=null && _achievements.size() > 0);
@@ -31,18 +54,8 @@ public abstract class Training implements Identifiable {
 
     protected abstract void UpdateAchievement();
 
-    @Override
-    public String getId() {
-        return mId;
-    }
-
     public void setId(String id) {
         this.mId = id;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s @ %tD",getClass().getSimpleName(), DateOfTraining);
     }
 }
 
